@@ -44,7 +44,11 @@ body{
 button{
     border-radius: 30px;
     font-size: 35px;
-    outline:none
+    outline:none;
+}
+
+button::-moz-focus-inner{
+    border: 0;
 }
 
 #C{
