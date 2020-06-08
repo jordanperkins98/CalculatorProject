@@ -44,7 +44,15 @@ function evaluate(expressionArray){
             i--;
         }
     }
-    console.log(expressionArray)
+    for(let i = 1; i < expressionArray.length; i++){
+        if(expressionArray[i] === "+" || expressionArray[i] === "-"){
+            
+            totalSum = operate(expressionArray[i - 1], expressionArray[i], expressionArray[i + 1]);
+            expressionArray.splice(i - 1,3,totalSum);
+            totalSum = 0;
+            i--;
+        }
+    }
     return expressionArray.join(" ");
 
 }
