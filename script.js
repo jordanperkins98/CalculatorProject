@@ -33,34 +33,60 @@ function operate(num1, operator, num2){
     }
 }
 
+function evaluate(expressionArray){
+    let totalSum = 0;
+    for(let i = 1; i < expressionArray.length; i++){
+        if(expressionArray[i] === "x" || expressionArray[i] === "/"){
+            
+            totalSum = operate(expressionArray[i - 1], expressionArray[i], expressionArray[i + 1]);
+            expressionArray.splice(i - 1,3,totalSum);
+            totalSum = 0;
+            i--;
+        }
+    }
+    console.log(expressionArray)
+    return expressionArray.join(" ");
+
+}
+
 
 
 const display = document.querySelector("#display");
 
 const buttons = document.querySelectorAll("button");
 
-const clearButton = document.querySelector("#CE");
+const clearButton = document.querySelector("#C");
 
 const equalsButton = document.querySelector("#equals");
 
 equalsButton.addEventListener("click", function(){
     if(display.textContent.length >= 3){
-        displayArray = display.textContent.split("");
-        display.textContent = operate(displayArray[0], displayArray[1], displayArray[2])
+        displayArray = display.textContent.split(" ");        
+        display.textContent = evaluate(displayArray);
     }
 })
 
 clearButton.addEventListener("click", function(){
-    displayArray = display.textContent.split("");
-    displayArray.pop();
-    display.textContent = displayArray.join("");
+    display.textContent = "";
 })
 
 for(let i = 0; i < buttons.length; i++){
-    if(buttons[i].textContent != "=" && buttons[i].textContent != "CE"){
-        buttons[i].addEventListener("click", function(e){
-            display.textContent += e.srcElement.textContent;
-        }) 
+    if(buttons[i].textContent != "=" && buttons[i].textContent != "C"){
+        if(buttons[i].classList.value === "operators"){
+            buttons[i].addEventListener("click", function(e){
+                if(display.textContent === ""){
+                    display.textContent += "0";
+                }
+                display.textContent += " " + e.srcElement.textContent + " ";
+                
+            }) 
+        }
+        else{
+            buttons[i].addEventListener("click", function(e){
+                display.textContent += e.srcElement.textContent;
+            }) 
+        }
+        
     }
 }
 

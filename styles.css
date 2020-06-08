@@ -43,9 +43,11 @@ body{
 
 button{
     border-radius: 30px;
+    font-size: 35px;
+    outline:none
 }
 
-#CE{
+#C{
     background-color: rgb(238, 65, 65);
 }
 
@@ -109,7 +111,7 @@ button{
     grid-area: 5 / 3 / 5 / 3;
 }
 .operators{
-    font-size: 35px;
+    
     width: 100%;
     height: 50px;
 }
