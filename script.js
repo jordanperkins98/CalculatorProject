@@ -33,8 +33,11 @@ function operate(num1, operator, num2){
     }
 }
 
+
+//This takes in the whole expression at the point of pressing equals and evaluates it based on operator precedence, divide & multiply first then + & -.
 function evaluate(expressionArray){
     let totalSum = 0;
+    //Looks for the multiply and divide operators.
     for(let i = 1; i < expressionArray.length; i++){
         if(expressionArray[i] === "x" || expressionArray[i] === "/"){
             totalSum = operate(expressionArray[i - 1], expressionArray[i], expressionArray[i + 1]);
@@ -46,6 +49,8 @@ function evaluate(expressionArray){
             i--;
         }
     }
+
+    //Looks for the plus and subtract operators.
     for(let i = 1; i < expressionArray.length; i++){
         if(expressionArray[i] === "+" || expressionArray[i] === "-"){
             totalSum = operate(expressionArray[i - 1], expressionArray[i], expressionArray[i + 1]);
@@ -55,12 +60,16 @@ function evaluate(expressionArray){
             i--;
         }
     }
+    recentAnswer = Number(expressionArray.join(" "));
     return expressionArray.join(" ");
 
 }
 
+// This variable is used to check the recent answer was so we can check if the user intends to start a new expression or add more numbers to current expression
 
+let recentAnswer;
 
+//Caching references DOM elements.
 const display = document.querySelector("#display");
 
 const buttons = document.querySelectorAll("button");
@@ -81,28 +90,38 @@ clearButton.addEventListener("click", function(){
 })
 
 for(let i = 0; i < buttons.length; i++){
+    
     if(buttons[i].textContent != "=" && buttons[i].textContent != "C"){
+        // Checks if user pressed an operator or number.
         if(buttons[i].classList.value === "operators"){
             buttons[i].addEventListener("click", function(e){
                 if(display.textContent === ""){
                     display.textContent += "0";
                 }
                 display.textContent += " " + e.srcElement.textContent + " ";
+                recentAnswer = "";
                 
             }) 
         }
+        // Check if the intent is to use a negative number or subtract operator
         else if(buttons[i].id === "subtract"){
             buttons[i].addEventListener("click", function(e){
                 displayArray = display.textContent.split(" ");
                 let lastElement;
 
+                //get the value of the last real element not including non spaces ""
+                //
                 if(displayArray[displayArray.length - 1] === ""){
                     lastElement = displayArray.length - 2
                 }
                 else{
                     lastElement = displayArray.length - 1;
                 }
-                console.log(displayArray);
+
+                // if subtract is the first button to be pushed user intended a negative number,
+                // if the last button to be pressed was an operator then the intent was also a negative number
+                // else intent was subtract operator.
+                // resets the recentAnswer variable.
                 if(display.textContent === ""){
                     display.textContent += "-";
                 }
@@ -111,13 +130,22 @@ for(let i = 0; i < buttons.length; i++){
                 }
                 else{
                     display.textContent += " " + e.srcElement.textContent + " ";
+                    recentAnswer = "";
                 }
             })
             
         }
         else{
             buttons[i].addEventListener("click", function(e){
-                display.textContent += e.srcElement.textContent;
+                const displayArray = display.textContent.split(" ");
+                console.log(recentAnswer, displayArray);
+                if(Number(displayArray[0]) === recentAnswer){
+                    display.textContent = e.srcElement.textContent;
+                }
+                else{
+                    display.textContent += e.srcElement.textContent;
+                }
+                
             }) 
         }
         
