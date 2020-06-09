@@ -54,7 +54,6 @@ function evaluate(expressionArray){
     for(let i = 1; i < expressionArray.length; i++){
         if(expressionArray[i] === "+" || expressionArray[i] === "-"){
             totalSum = operate(expressionArray[i - 1], expressionArray[i], expressionArray[i + 1]);
-            console.log(totalSum);
             expressionArray.splice(i - 1,3,totalSum);
             totalSum = 0;
             i--;
@@ -98,6 +97,17 @@ for(let i = 0; i < buttons.length; i++){
                 if(display.textContent === ""){
                     display.textContent += "0";
                 }
+
+                displayArray = display.textContent.split(" ");
+                let lastElement = getLastElement(displayArray);
+
+        
+                if(isNaN(displayArray[lastElement])){
+                    displayArray.splice(lastElement,1, e.srcElement.textContent)
+                    display.textContent = displayArray.join(" ");
+                    return;
+                }
+
                 display.textContent += " " + e.srcElement.textContent + " ";
                 recentAnswer = "";
                 
@@ -106,17 +116,9 @@ for(let i = 0; i < buttons.length; i++){
         // Check if the intent is to use a negative number or subtract operator
         else if(buttons[i].id === "subtract"){
             buttons[i].addEventListener("click", function(e){
-                displayArray = display.textContent.split(" ");
-                let lastElement;
 
-                //get the value of the last real element not including non spaces ""
-                //
-                if(displayArray[displayArray.length - 1] === ""){
-                    lastElement = displayArray.length - 2
-                }
-                else{
-                    lastElement = displayArray.length - 1;
-                }
+                displayArray = display.textContent.split(" ");
+                let lastElement = getLastElement(displayArray);
 
                 // if subtract is the first button to be pushed user intended a negative number,
                 // if the last button to be pressed was an operator then the intent was also a negative number
@@ -138,7 +140,6 @@ for(let i = 0; i < buttons.length; i++){
         else{
             buttons[i].addEventListener("click", function(e){
                 const displayArray = display.textContent.split(" ");
-                console.log(recentAnswer, displayArray);
                 if(Number(displayArray[0]) === recentAnswer){
                     display.textContent = e.srcElement.textContent;
                 }
@@ -153,4 +154,17 @@ for(let i = 0; i < buttons.length; i++){
 }
 
 
+
+function getLastElement(displayArray) {
+    //get the value of the last real element not including non spaces ""
+                
+    let lastElement;
+    if (displayArray[displayArray.length - 1] === "") {
+        lastElement = displayArray.length - 2;
+    }
+    else {
+        lastElement = displayArray.length - 1;
+    }
+    return lastElement;
+}
 
