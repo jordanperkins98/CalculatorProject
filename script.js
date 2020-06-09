@@ -89,6 +89,21 @@ for(let i = 0; i < buttons.length; i++){
                 
             }) 
         }
+        else if(buttons[i].id === "subtract"){
+            buttons[i].addEventListener("click", function(e){
+                displayArray = display.textContent.split(" ");
+                if(display.textContent === ""){
+                    display.textContent += "-";
+                }
+                else if(isNaN(displayArray[displayArray.length - 2])){
+                    display.textContent += "-";
+                }
+                else{
+                    display.textContent += " " + e.srcElement.textContent + " ";
+                }
+            })
+            
+        }
         else{
             buttons[i].addEventListener("click", function(e){
                 display.textContent += e.srcElement.textContent;
