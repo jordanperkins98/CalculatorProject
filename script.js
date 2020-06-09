@@ -94,10 +94,19 @@ for(let i = 0; i < buttons.length; i++){
         else if(buttons[i].id === "subtract"){
             buttons[i].addEventListener("click", function(e){
                 displayArray = display.textContent.split(" ");
+                let lastElement;
+
+                if(displayArray[displayArray.length - 1] === ""){
+                    lastElement = displayArray.length - 2
+                }
+                else{
+                    lastElement = displayArray.length - 1;
+                }
+                console.log(displayArray);
                 if(display.textContent === ""){
                     display.textContent += "-";
                 }
-                else if(isNaN(displayArray[displayArray.length - 2])){
+                else if(isNaN(displayArray[lastElement])){
                     display.textContent += "-";
                 }
                 else{
